@@ -35,7 +35,7 @@ jobs:
         wget https://apt.devkitpro.org/install-devkitpro-pacman
         chmod +x ./install-devkitpro-pacman
         sudo ./install-devkitpro-pacman
-        sudo pacman -S switch-dev --noconfirm
+        sudo dkp-pacman -S switch-dev --noconfirm
         
     - name: Install MSYS2 and packages
       if: matrix.job_name == 'windows'
