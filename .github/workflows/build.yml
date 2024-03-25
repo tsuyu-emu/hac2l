@@ -43,7 +43,6 @@ jobs:
         sudo pacman -Syu --noconfirm
         sudo pacman -S switch-dev --noconfirm
         
-
     - name: Install MSYS2 and packages
       if: matrix.job_name == 'windows'
       uses: msys2/setup-msys2@v2
@@ -53,12 +52,11 @@ jobs:
         update: true
         install: mingw-w64-x86_64-gcc mingw-w64-x86_64-make
 
-
     - name: Install devkit on MSYS2
       if: matrix.job_name == 'windows'
       run: |
-        sed -i '$a[dkp-libs]\nServer = https://pkg.devkitpro.org/packages' >> /etc/pacman.conf
-        sed -i '$a[dkp-windows]\nServer = https://pkg.devkitpro.org/packages/windows/$arch/' >> /etc/pacman.conf
+        sed -i '$a[dkp-libs]\nServer = https://pkg.devkitpro.org/packages' /etc/pacman.conf
+        sed -i '$a[dkp-windows]\nServer = https://pkg.devkitpro.org/packages/windows/$arch/' /etc/pacman.conf
         pacman-key --recv BC26F752D25B92CE272E0F44F7FD5492264BB9D0 --keyserver keyserver.ubuntu.com
         pacman-key --lsign BC26F752D25B92CE272E0F44F7FD5492264BB9D0
         curl -O https://pkg.devkitpro.org/devkitpro-keyring.pkg.tar.xz
