@@ -9,7 +9,7 @@ jobs:
 
         include:
         - job_name: linux
-          os: arch-latest
+          os: ubuntu-18.04
           shell: bash {0}
 
         - job_name: windows
@@ -28,6 +28,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     
     steps:
+    - name: Install Archlinux
+      if: matrix.job_name == 'linux'
+      run: curl -L https://github.com/zaoqi/github-actions-archlinux/raw/master/install.sh | sh
     - name: Install build dependencies
       if: matrix.job_name == 'linux'
       run: |
@@ -38,7 +41,7 @@ jobs:
         sudo pacman-key --lsign BC26F752D25B92CE272E0F44F7FD5492264BB9D0
         curl  https://pkg.devkitpro.org/devkitpro-keyring.pkg.tar.xz | sudo pacman -U --noconfirm
         sudo pacman -Syu --noconfirm
-        pacman -S switch-dev --noconfirm
+        sudo pacman -S switch-dev --noconfirm
         
 
     - name: Install MSYS2 and packages
