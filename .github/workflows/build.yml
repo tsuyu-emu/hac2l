@@ -27,11 +27,7 @@ jobs:
     name: hact2l-${{ matrix.job_name }}
     runs-on: ${{ matrix.os }}
     
-    steps:
-    - name: Install Archlinux
-      if: matrix.job_name == 'linux'
-      run: curl -L https://github.com/zaoqi/github-actions-archlinux/raw/master/install.sh | sh
-   
+    steps: 
     - name: Install build dependencies
       if: matrix.job_name == 'linux'
       run: |
