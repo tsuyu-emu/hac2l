@@ -21,6 +21,7 @@ endif
 # rules for different file extensions
 #---------------------------------------------------------------------------------
 ifneq ($(__RECURSIVE__),1)
+ATMOSPHERE_LIBRARIES_DIR := $(CURDIR)/libraries
 #---------------------------------------------------------------------------------
 
 export TOPDIR	:=	$(CURDIR)
