@@ -58,8 +58,9 @@ jobs:
         echo "[dkp-windows]\nServer = https://pkg.devkitpro.org/packages/windows/$arch/" >> /etc/pacman.conf
         sudo pacman-key --recv BC26F752D25B92CE272E0F44F7FD5492264BB9D0 --keyserver keyserver.ubuntu.com
         sudo pacman-key --lsign BC26F752D25B92CE272E0F44F7FD5492264BB9D0
-        curl  https://pkg.devkitpro.org/devkitpro-keyring.pkg.tar.xz | sudo pacman -U --noconfirm
-        sudo pacman -Syu --noconfirm
+        curl -O https://pkg.devkitpro.org/devkitpro-keyring.pkg.tar.xz
+        pacman -U devkitpro-keyring.pkg.tar.xz --noconfirm
+        pacman -Syu --noconfirm
         pacman -S switch-dev --noconfirm
 
     - uses: actions/checkout@v1
