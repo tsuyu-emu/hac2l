@@ -9,7 +9,7 @@ jobs:
 
         include:
         - job_name: linux
-          os: ubuntu-latest
+          os: arch-latest
           shell: bash {0}
 
         - job_name: windows
@@ -31,7 +31,15 @@ jobs:
     - name: Install build dependencies
       if: matrix.job_name == 'linux'
       run: |
-        sudo apt-get update && sudo apt-get install -y gcc make
+        sudo pacman -Syu --noconfirm && sudo pacman -S gcc make
+        echo "[dkp-libs]\nServer = https://pkg.devkitpro.org/packages" >> /etc/pacman.conf
+        echo "[dkp-linux]\nServer = https://pkg.devkitpro.org/packages/linux/$arch/" >> /etc/pacman.conf
+        sudo pacman-key --recv BC26F752D25B92CE272E0F44F7FD5492264BB9D0 --keyserver keyserver.ubuntu.com
+        sudo pacman-key --lsign BC26F752D25B92CE272E0F44F7FD5492264BB9D0
+        curl  https://pkg.devkitpro.org/devkitpro-keyring.pkg.tar.xz | sudo pacman -U --noconfirm
+        sudo pacman -Syu --noconfirm
+        pacman -S switch-dev --noconfirm
+        
 
     - name: Install MSYS2 and packages
       if: matrix.job_name == 'windows'
@@ -41,6 +49,18 @@ jobs:
         msystem: MINGW64
         update: true
         install: mingw-w64-x86_64-gcc mingw-w64-x86_64-make
+
+
+    - name: Install devkit on MSYS2
+      if: matrix.job_name == 'windows'
+      run: |
+        echo "[dkp-libs]\nServer = https://pkg.devkitpro.org/packages" >> /etc/pacman.conf
+        echo "[dkp-windows]\nServer = https://pkg.devkitpro.org/packages/windows/$arch/" >> /etc/pacman.conf
+        sudo pacman-key --recv BC26F752D25B92CE272E0F44F7FD5492264BB9D0 --keyserver keyserver.ubuntu.com
+        sudo pacman-key --lsign BC26F752D25B92CE272E0F44F7FD5492264BB9D0
+        curl  https://pkg.devkitpro.org/devkitpro-keyring.pkg.tar.xz | sudo pacman -U --noconfirm
+        sudo pacman -Syu --noconfirm
+        pacman -S switch-dev --noconfirm
 
     - uses: actions/checkout@v1
 
@@ -54,7 +74,7 @@ jobs:
         git clone https://github.com/Atmosphere-NX/hac2l.git "$hac2l_src_dir"
         cd "$hac2l_src_dir"
         git checkout '7fc1b3a32c6a870c47d7459b23fd7c7b63014186'
-        make -j $NPROC linux_x64_release
+        make -j6 linux_x64_release
         echo -e "Moving \e[1;92m$bin_name\e[0m binary to \e[1;92m'$BIN_PATH'\e[0m"
         mv "./out/**/$bin_name" "$BIN_PATH/"
 
