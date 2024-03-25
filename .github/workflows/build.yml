@@ -9,7 +9,7 @@ jobs:
 
         include:
         - job_name: linux
-          os: ubuntu-18.04
+          os: ubuntu-latest
           shell: bash {0}
 
         - job_name: windows
