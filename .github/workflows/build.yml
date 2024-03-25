@@ -31,16 +31,14 @@ jobs:
     - name: Install Archlinux
       if: matrix.job_name == 'linux'
       run: curl -L https://github.com/zaoqi/github-actions-archlinux/raw/master/install.sh | sh
+   
     - name: Install build dependencies
       if: matrix.job_name == 'linux'
       run: |
-        sudo pacman -Syu --noconfirm && sudo pacman -S gcc make
-        echo "[dkp-libs]\nServer = https://pkg.devkitpro.org/packages" >> /etc/pacman.conf
-        echo "[dkp-linux]\nServer = https://pkg.devkitpro.org/packages/linux/$arch/" >> /etc/pacman.conf
-        sudo pacman-key --recv BC26F752D25B92CE272E0F44F7FD5492264BB9D0 --keyserver keyserver.ubuntu.com
-        sudo pacman-key --lsign BC26F752D25B92CE272E0F44F7FD5492264BB9D0
-        curl  https://pkg.devkitpro.org/devkitpro-keyring.pkg.tar.xz | sudo pacman -U --noconfirm
-        sudo pacman -Syu --noconfirm
+        sudo apt upgrade -y && sudo apt install -y gcc make
+        wget https://apt.devkitpro.org/install-devkitpro-pacman
+        chmod +x ./install-devkitpro-pacman
+        sudo ./install-devkitpro-pacman
         sudo pacman -S switch-dev --noconfirm
         
     - name: Install MSYS2 and packages
